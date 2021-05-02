@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types'
 
-const Form = ({setresultado}) => {
+const Form = ({setresultado , seterrorResultado}) => {
 
   const [data, setdata] = useState({
     pais:"",
@@ -34,12 +35,28 @@ const Form = ({setresultado}) => {
     //CONSULTAMOS API
     const res = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=dd91a5392f74fd6bf1e8c772fd426702`);
 
-    const data = await res.json()
+    const data = await res.json();
+
+    if(data.cod === "404") {
+      seterrorResultado({
+        error: true,
+        mensaje: "Ciudad no encontrada"
+      });
+
+
+      return;
+    }
+
+    seterrorResultado({
+      error: false,
+      mensaje: ""
+    });
+
     const {temp , temp_min, temp_max } = data.main;
   
-    const tempC = temp - 273.15;
-    const minC  = temp_min - 273.15;
-    const maxC  = temp_max - 273.15;
+    const tempC = parseFloat( temp - 273.15 ).toFixed(2);
+    const minC  = parseFloat( temp_min - 273.15 ).toFixed(2);
+    const maxC  = parseFloat( temp_max - 273.15 ).toFixed(2);
 
     setresultado({
       pais,
@@ -97,6 +114,13 @@ const Form = ({setresultado}) => {
         </form>   
     </>
    );
+}
+  
+
+Form.propTypes = {
+  setresultado: PropTypes.func.isRequired,
+  seterrorResultado: PropTypes.func.isRequired
+
 }
  
 export default Form;

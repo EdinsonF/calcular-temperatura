@@ -3,10 +3,17 @@ import './index.css';
 import Headers from './Components/Headers';
 import Form from './Components/Form';
 import ViewTemp from './Components/ViewTemp';
+import CiudadError from './Components/CiudadError';
+
 
 function App() {
 
-    const [resultado, setresultado] = useState({})
+    const [resultado, setresultado] = useState({});
+
+    const [errorResultado, seterrorResultado] = useState({
+      error : false,
+      mensaje : ""
+    })
  
   return (
    <>
@@ -16,10 +23,16 @@ function App() {
           <div className="container">
             <div className="row">
               <div className="col m6 s12">
-                  <Form setresultado={setresultado}/>
+                  <Form setresultado={setresultado} 
+                  
+                        seterrorResultado={seterrorResultado}/>
               </div>
               <div className="col m6 s12">
-                  <ViewTemp resultado={resultado}/>
+
+                { errorResultado.error ? 
+                    < CiudadError errorResultado={errorResultado}/>  :    <ViewTemp resultado={resultado}/>
+                }
+                  
               </div>
 
             </div>

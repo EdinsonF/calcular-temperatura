@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ViewTemp = ({resultado}) => {
 
   
-const {pais, ciudad , tempC , minC , maxC } = resultado;
+const { ciudad , tempC , minC , maxC } = resultado;
 
 if(!tempC)  return null;
 
@@ -14,7 +15,15 @@ if(!tempC)  return null;
           <div className="black-text">
             <h2> El clima de {ciudad} es:</h2>
             <p className="temperatura">
-                {tempC}
+                {tempC} <span> &#x2103;</span>
+            </p>
+
+            <p> Maxima: 
+                {maxC} <span> &#x2103;</span>
+            </p>
+
+            <p> Minima:
+                {minC}  <span> &#x2103;</span>
             </p>
           </div>
 
@@ -22,5 +31,9 @@ if(!tempC)  return null;
     </>
    );
 }
- 
+
+ViewTemp.propTypes = {
+  resultado: PropTypes.object.isRequired
+}
+
 export default ViewTemp;
